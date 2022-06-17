@@ -22,6 +22,7 @@
 		EFD4E5A02856BE6400782F11 /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD4E59F2856BE6400782F11 /* MessagesView.swift */; };
 		EFD4E5A42858943100782F11 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD4E5A32858943100782F11 /* ProfileView.swift */; };
 		EFD4E5A628589B7500782F11 /* TweetFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD4E5A528589B7500782F11 /* TweetFilterViewModel.swift */; };
+		EFD4E5AB285C4BB500782F11 /* UserRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD4E5AA285C4BB500782F11 /* UserRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		EFD4E59F2856BE6400782F11 /* MessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
 		EFD4E5A32858943100782F11 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		EFD4E5A528589B7500782F11 /* TweetFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetFilterViewModel.swift; sourceTree = "<group>"; };
+		EFD4E5AA285C4BB500782F11 /* UserRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +187,7 @@
 		EFD4E5872856B63700782F11 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				EFD4E5A9285C4BA500782F11 /* Users */,
 				EFD4E58D2856B73700782F11 /* Tweets */,
 			);
 			path = Components;
@@ -249,7 +252,8 @@
 		EFD4E5992856BDC900782F11 /* Explore */ = {
 			isa = PBXGroup;
 			children = (
-				EFD4E59B2856BE2400782F11 /* ExploreView.swift */,
+				EFD4E5A8285C4B8000782F11 /* ViewModels */,
+				EFD4E5A7285C4B7B00782F11 /* Views */,
 			);
 			path = Explore;
 			sourceTree = "<group>";
@@ -277,6 +281,29 @@
 				EFD4E5A32858943100782F11 /* ProfileView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		EFD4E5A7285C4B7B00782F11 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EFD4E59B2856BE2400782F11 /* ExploreView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EFD4E5A8285C4B8000782F11 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		EFD4E5A9285C4BA500782F11 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				EFD4E5AA285C4BB500782F11 /* UserRowView.swift */,
+			);
+			path = Users;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -417,6 +444,7 @@
 				EFD4E58C2856B69B00782F11 /* FeedView.swift in Sources */,
 				EFD4E55A2856B5DA00782F11 /* TwitterSwiftUIApp.swift in Sources */,
 				EFD4E59C2856BE2400782F11 /* ExploreView.swift in Sources */,
+				EFD4E5AB285C4BB500782F11 /* UserRowView.swift in Sources */,
 				EFD4E5942856BC8700782F11 /* MainTabView.swift in Sources */,
 				EFD4E59E2856BE4200782F11 /* NotificationsView.swift in Sources */,
 			);
