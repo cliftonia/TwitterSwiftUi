@@ -6,11 +6,17 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ProfileView: View {
     @State private var selectedFilter: TwitterFilterViewModel = .tweets
+    @ObservedObject var viewModel: ProfileViewModel
     @Environment(\.presentationMode) var mode
     @Namespace var animation
+    
+    init(user: User) {
+        self.viewModel = ProfileViewModel(user: user)
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -19,19 +25,27 @@ struct ProfileView: View {
             actionButtons
             
             userInfoDetails
-              
+            
             tweetFilterBar
             
             tweetsView
             
             Spacer()
         }
+        .navigationBarHidden(true)
     }
 }
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView()
+        ProfileView(
+            user: User(
+                id: NSUUID().uuidString,
+                username: "Batman",
+                fullName: "Bruce Wayne",
+                profileImageUrl: "",
+                email: "batman@gmail.com")
+        )
     }
 }
 
@@ -50,11 +64,14 @@ extension ProfileView {
                         .resizable()
                         .frame(width: 20, height: 16)
                         .foregroundColor(.white)
-                        .offset(x: 16, y: 12)
+                        .offset(x: 16, y: -4)
                 }
                 
                 
-                Circle()
+                KFImage(URL(string: viewModel.user.profileImageUrl))
+                    .resizable()
+                    .scaledToFill()
+                    .clipShape(Circle())
                     .frame(width: 72, height: 72)
                     .offset(x: 16, y: 24)
             }
@@ -75,7 +92,7 @@ extension ProfileView {
             Button {
                 
             } label: {
-                Text("Edit Profile")
+                Text(viewModel.actionButtonTitle)
                     .font(.subheadline).bold()
                     .frame(width: 120, height: 32)
                     .foregroundColor(.black)
@@ -89,7 +106,7 @@ extension ProfileView {
     var userInfoDetails: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Text("Heath Ledger")
+                Text(viewModel.user.fullName)
                     .font(.title2).bold()
                 
                 Image(systemName: "checkmark.seal.fill")
@@ -97,7 +114,7 @@ extension ProfileView {
                 
             }
             
-            Text("@joker")
+            Text("@\(viewModel.user.username)")
                 .font(.subheadline)
                 .foregroundColor(.gray)
             
@@ -121,7 +138,7 @@ extension ProfileView {
             }
             .font(.caption)
             .foregroundColor(.gray)
-
+            
             UserStatsView()
                 .padding(.vertical)
             
@@ -161,8 +178,8 @@ extension ProfileView {
     var tweetsView: some View {
         ScrollView {
             LazyVStack {
-                ForEach(0 ... 9, id: \.self) { _ in
-                    TweetRowView()
+                ForEach(viewModel.tweets(forFilter: self.selectedFilter)) { tweet in
+                    TweetRowView(tweet: tweet)
                         .padding()
                 }
             }

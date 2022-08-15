@@ -6,36 +6,167 @@
 //
 
 import XCTest
+import EyesXCUI
+
+@testable import TwitterSwiftUI
 
 class TwitterSwiftUIUITests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    
+    func testTest() {
+        // Initialize the eyes SDK and set your private API key.
+        let eyes = Eyes()
+        eyes.apiKey = ""
+        
         let app = XCUIApplication()
+        
         app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        // Start the test.
+        eyes.open(withApplicationName: "App Demo V3", testName: "Login V2")
+        
+        let email = app.textFields["Email"]
+        let password = app.secureTextFields["Password"]
+        
+        email.tap()
+        email.typeText("test@test.com")
+        password.tap()
+        password.typeText("test123")
+        
+        // Visual checkpoint #1. -> Please not statusBarExists True will disable it from being screenshotted
+        eyes.check(withTag: "loginView", andSettings: Target.window().statusBarExists(true).timeout(inSeconds: 3))
+        
+        // End the test.
+        do {
+            try eyes.close()
+            app.navigationBars["Home"].buttons["SideBar"].tap()
+            app.buttons["Logout"].tap()
+        } catch {
+            eyes.abortIfNotClosed()
+        }
     }
+    
+    func testLogin() {
+        // Initialize the eyes SDK and set your private API key.
+        let eyes = Eyes()
+        eyes.apiKey = ""
+        
+        let app = XCUIApplication()
+        let email = app.textFields["Email"]
+        let password = app.secureTextFields["Password"]
+        
+        app.launch()
+    
+        // Start the test.
+        eyes.open(withApplicationName: "App Demo V2", testName: "Login")
+        
+        email.tap()
+        email.typeText("test@test.com")
+        password.tap()
+        password.typeText("test123")
+    
+        // Visual checkpoint #1. -> Please not statusBarExists True will disable it from being screenshotted
+        eyes.check(withTag: "loginView", andSettings: Target.window().statusBarExists(true).timeout(inSeconds: 3))
+                
+        app.buttons["Sign In"].tap()
+        
+        // End the test.
+        do {
+            try eyes.close()
+            app.navigationBars["Home"].buttons["SideBar"].tap()
+            app.buttons["Logout"].tap()
+        } catch {
+            eyes.abortIfNotClosed()
+        }
+    }
+    
+    func testNewTweet() throws {
+        // Initialize the eyes SDK and set your private API key.
+        let eyes = Eyes()
+        eyes.apiKey = ""
+        
+        let app = XCUIApplication()
+        let email = app.textFields["Email"]
+        let password = app.secureTextFields["Password"]
+        
+        app.launch()
+        
+        // Start the test.
+        eyes.open(withApplicationName: "App Demo V2", testName: "New Tweet")
+        
+        email.tap()
+        email.typeText("test123@test.com")
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
+        password.tap()
+        password.typeText("Test123")
+        sleep(3)
+        app.buttons["Sign In"].tap()
+        
+        // Visual checkpoint #1. -> Please not statusBarExists True will disable it from being screenshotted
+        eyes.check(withTag: "mainInterfaceView", andSettings: Target.window().statusBarExists(true).timeout(inSeconds: 3))
+        
+        let tweetButton = app.buttons["tweet"]
+        tweetButton.tap()
+        
+        eyes.check(withTag: "New Tweet View", andSettings: Target.window().statusBarExists(true).timeout(inSeconds: 3))
+        
+        let cancelButton = app.buttons["Cancel"]
+        cancelButton.tap()
+                                
+        // End the test.
+        do {
+            try eyes.close()
+            app.navigationBars["Home"].buttons["SideBar"].tap()
+            app.buttons["Logout"].tap()
+        } catch {
+            eyes.abortIfNotClosed()
+        }
+        
+    }
+        
+    func testSideMenuProfileLink() throws {
+        // Initialize the eyes SDK and set your private API key.
+        let eyes = Eyes()
+        eyes.apiKey = ""
+        
+        let app = XCUIApplication()
+        let email = app.textFields["Email"]
+        let password = app.secureTextFields["Password"]
+        
+        app.launch()
+        
+        // Start the test.
+        eyes.open(withApplicationName: "App Demo V2", testName: "SideMenu & Profile")
+        
+        email.tap()
+        email.typeText("test@test.com")
+        password.tap()
+        password.typeText("test123")
+        
+        sleep(3)
+        app.buttons["Sign In"].tap()
+        
+        // Visual checkpoint #1. -> Please not statusBarExists True will disable it from being screenshotted
+        eyes.check(withTag: "mainInterfaceView", andSettings: Target.window().statusBarExists(true).timeout(inSeconds: 3))
+
+        app.navigationBars["Home"].buttons["SideBar"].tap()
+    
+        // Visual checkpoint #2.
+        eyes.check(withTag: "Side Menu", andSettings: Target.window().timeout(inSeconds: 3))
+        
+        app.buttons["Profile"].tap()
+        
+        // Visual checkpoint #3.
+        eyes.check(withTag: "Profile View", andSettings: Target.window().timeout(inSeconds: 5))
+        
+        app.buttons.firstMatch.tap()
+        
+        // End the test.
+        do {
+            try eyes.close()
+            app.navigationBars["Home"].buttons["SideBar"].tap()
+            app.buttons["Logout"].tap()
+        } catch {
+            eyes.abortIfNotClosed()
         }
     }
 }

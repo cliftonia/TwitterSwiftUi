@@ -13,56 +13,74 @@ struct RegistrationView: View {
     @State private var fullName = ""
     @State private var password = ""
     @Environment(\.presentationMode) var presentationMode
-    
+    @EnvironmentObject var viewModel: AuthViewModel
     
     var body: some View {
-        VStack {
-            AuthHeaderView(title1: "Get Started.", title2: "Create your account")
+        ScrollView {
             
-            VStack(spacing: 40) {
-                CustomInputField(imageName: "envelope", placeholderText: "Email", text: $email)
+            VStack {
                 
-                CustomInputField(imageName: "person", placeholderText: "Username", text: $username)
+                NavigationLink(destination: ProfilePhotoSelectorView(), isActive: $viewModel.didAuthenticateUser, label: {})
                 
-                CustomInputField(imageName: "person", placeholderText: "Full Name", text: $fullName)
+                AuthHeaderView(title1: "Get Started.", title2: "Create your account")
                 
-                CustomInputField(imageName: "lock", placeholderText: "Password", text: $password)
-            }
-            .padding(32)
-            
-            Button {
-                print("Sign up here..")
-            } label: {
-                Text("Sign Up")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(width: 340, height: 50)
-                    .background(Color(.systemBlue))
-                    .clipShape(Capsule())
-                    .padding()
-            }
-            .shadow(
-                color: .gray.opacity(0.5),
-                radius: 10,
-                x: 0,
-                y: 0
-            )
-            
-            Spacer()
-            
-            Button {
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                HStack {
-                    Text("Already have an account?")
-                        .font(.footnote)
+                VStack(spacing: 40) {
+                    CustomInputField(imageName: "envelope", placeholderText: "Email", text: $email)
                     
-                    Text("Sign In")
-                        .font(.footnote)
-                        .fontWeight(.semibold)
+                    CustomInputField(imageName: "person", placeholderText: "Username", text: $username)
+                    
+                    CustomInputField(imageName: "person", placeholderText: "Full Name", text: $fullName)
+                    
+                    CustomInputField(
+                        imageName: "lock",
+                        placeholderText: "Password",
+                        isSecureField: true,
+                        text: $password
+                    )
                 }
-                .padding(.bottom, 32)
+                .padding(32)
+                
+                Button {
+                    viewModel.register(
+                        withEmail: email,
+                        paswword: password,
+                        fullName: fullName,
+                        username: username
+                    )
+                } label: {
+                    Text("Sign Up")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(width: 340, height: 50)
+                        .background(Color(.systemBlue))
+                        .clipShape(Capsule())
+                        .padding()
+                }
+                .accessibilityLabel("Sign Up")
+                .shadow(
+                    color: .gray.opacity(0.5),
+                    radius: 10,
+                    x: 0,
+                    y: 0
+                )
+                
+                Spacer()
+                
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    HStack {
+                        Text("Already have an account?")
+                            .font(.footnote)
+                        
+                        Text("Sign In")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
+                    }
+                    .padding(.bottom, 32)
+                }.accessibilityLabel("Sign In")
             }
+            
         }
         .ignoresSafeArea()
     }
